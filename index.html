@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeoMind — Inteligência Neogrid</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #0f1f3d;
+    --navy-light: #1a2f52;
+    --red: #E8382D;
+    --red-bright: #ff4438;
+    --white: #f5f7fa;
+    --white-dim: rgba(245,247,250,0.7);
+    --white-faint: rgba(245,247,250,0.12);
+    --white-border: rgba(245,247,250,0.08);
+    --glow: rgba(232,56,45,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  header {
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--white-border);
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--red);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-mark svg { width: 20px; height: 20px; }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .brand-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--white);
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--white-dim);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  .header-badge {
+    margin-left: auto;
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--white-dim);
+    letter-spacing: 0.3px;
+  }
+
+  /* Main layout */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 52px 0 36px;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--glow);
+    border: 1px solid rgba(232,56,45,0.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--red-bright);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--red); }
+
+  .hero p {
+    font-size: 16px;
+    color: var(--white-dim);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Suggestions */
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 28px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .suggestion-chip {
+    background: var(--white-faint);
+    border: 1px solid var(--white-border);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--white-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .suggestion-chip:hover {
+    background: rgba(232,56,45,0.1);
+    border-color: rgba(232,56,45,0.4);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  /* Chat area */
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 200px;
+  }
+
+  .message {
+    display: flex;
+    gap: 12px;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .message.user {
+    flex-direction: row-reverse;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .avatar.ai {
+    background: var(--red);
+    color: white;
+  }
+
+  .avatar.user-av {
+    background: var(--navy-light);
+    border: 1px solid var(--white-border);
+    color: var(--white-dim);
+  }
+
+  .bubble {
+    max-width: 680px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  .message.ai .bubble {
+    background: var(--navy-light);
+    border: 1px solid var(--white-border);
+    color: var(--white);
+    border-top-left-radius: 4px;
+  }
+
+  .message.user .bubble {
+    background: var(--red);
+    color: white;
+    border-top-right-radius: 4px;
+  }
+
+  .bubble strong {
+    color: var(--red-bright);
+    font-weight: 600;
+  }
+
+  .message.user .bubble strong {
+    color: white;
+  }
+
+  .bubble ul {
+    margin: 8px 0 4px 0;
+    padding-left: 18px;
+  }
+
+  .bubble li {
+    margin-bottom: 4px;
+  }
+
+  /* Typing indicator */
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 18px;
+    background: var(--navy-light);
+    border: 1px solid var(--white-border);
+    border-radius: 12px;
+    border-top-left-radius: 4px;
+    width: fit-content;
+  }
+
+  .typing span {
+    width: 6px;
+    height: 6px;
+    background: var(--white-dim);
+    border-radius: 50%;
+    animation: bounce 1.2s ease infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Source tag */
+  .source-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--glow);
+    border: 1px solid rgba(232,56,45,0.2);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: var(--red-bright);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* Input area */
+  .input-area {
+    padding: 20px 0 28px;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, var(--navy) 80%, transparent);
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--navy-light);
+    border: 1px solid var(--white-border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: border-color 0.2s ease;
+  }
+
+  .input-wrapper:focus-within {
+    border-color: rgba(232,56,45,0.5);
+  }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    resize: none;
+    min-height: 24px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  textarea::placeholder {
+    color: rgba(245,247,250,0.3);
+  }
+
+  .send-btn {
+    width: 36px;
+    height: 36px;
+    background: var(--red);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+
+  .send-btn:hover {
+    background: var(--red-bright);
+    transform: scale(1.05);
+  }
+
+  .send-btn:disabled {
+    background: var(--navy-mid);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .send-btn svg { width: 16px; height: 16px; }
+
+  .input-hint {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(245,247,250,0.25);
+    margin-top: 8px;
+    letter-spacing: 0.2px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--white-faint); border-radius: 2px; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+
+  /* Product chips */
+  .product-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .pill {
+    background: rgba(232,56,45,0.1);
+    border: 1px solid rgba(232,56,45,0.25);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: var(--red-bright);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  /* Error */
+  .error-bubble {
+    background: rgba(232,56,45,0.08);
+    border: 1px solid rgba(232,56,45,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: rgba(232,56,45,0.9);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" fill="white" opacity="0.9"/>
+      <path d="M12 6L17 9V15L12 18L7 15V9L12 6Z" fill="#E8382D"/>
+    </svg>
+  </div>
+  <div class="brand">
+    <span class="brand-name">NeoMind</span>
+    <span class="brand-sub">Inteligência de Produtos Neogrid</span>
+  </div>
+  <span class="header-badge">Beta · PMkt NeoGrid</span>
+</header>
+
+<div class="main">
+  <div id="heroSection" class="hero">
+    <div class="hero-eyebrow">IA Treinada nos Materiais Neogrid</div>
+    <h1>Pergunte sobre qualquer<br><span>solução Neogrid</span></h1>
+    <p>Diferenciais, casos de uso, como funciona, para qual perfil indicar — respondo com base nos materiais reais do time.</p>
+
+    <div class="suggestions">
+      <button class="suggestion-chip" onclick="sendSuggestion('Quais os diferenciais do VMI?')">Diferenciais do VMI</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Para qual perfil de cliente indicar o DRP?')">Perfil de cliente DRP</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Como funciona o S&OP da Neogrid?')">Como funciona o S&OP</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Qual a diferença entre VMI e NeoSmart Order?')">VMI vs NeoSmart Order</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Quais resultados o DRP já gerou em clientes?')">Resultados do DRP</button>
+    </div>
+  </div>
+
+  <div class="chat-area" id="chatArea"></div>
+
+  <div class="input-area">
+    <div class="input-wrapper">
+      <textarea
+        id="userInput"
+        placeholder="Pergunte sobre VMI, DRP, S&OP, NeoSmart Order, NeoLog..."
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="input-hint">Alimentado com materiais reais de produto · Versão piloto PMkt</div>
+  </div>
+</div>
+
+<script>
+const KNOWLEDGE_BASE = `
+=== VMI (Vendor Managed Inventory) ===
+O VMI da Neogrid é uma solução de colaboração entre indústria e seus parceiros (varejo e distribuidores) que automatiza o abastecimento e reposição de estoques. Permite que a indústria tenha acesso aos dados de vendas e movimentações de estoque dos varejos, assumindo o compromisso sobre o reabastecimento. Tudo alinhado com a demanda do consumidor final.
+
+O que entrega:
+- Visibilidade dos produtos nos pontos de venda com dados de inventário e consumo
+- Previsão de demanda a partir de dados de sell-out para reabastecimento preciso
+- Otimização da produção, processo de pedidos e logística
+- Menos estoque parado no chão de fábrica
+- Reposição alinhada à demanda
+
+Como funciona (3 módulos):
+1. Previsão Estatística: perfil de vendas, sazonalidade, tendências e outliers
+2. Gestão de Eventos: administração de eventos internos e externos que impactam demanda
+3. Operação: políticas de estoque, sugestões de compras e transferências, dashboards
+
+Diferenciais: Gestão de categorias (análise por tipo de produto, não só marca), Previsão futura, Omnichannel (adequação e-commerce + loja física), Fácil integração com qualquer ERP, Volume Liberado, Rateio por Indisponibilidade, SKU Virtual para Serviços, Controle por categoria.
+
+Perfil de cliente: Indústria (médio e grande porte), varejo e distribuidores. Áreas: Gerência e Diretoria de Marketing, Trade Marketing e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.
+
+Resultados (case Carrefour + Ypê): Aumento de 63% no sell-out, Redução de 45% nas rupturas, Melhoria de quase 50% na disponibilidade de produtos.
+
+Problemas que resolve: ruptura de estoque, excesso imobilizado, baixo giro, custo alto de pedidos urgentes, relacionamento baseado em desconto, falta de visibilidade no PDV.
+
+=== NeoSmart Order ===
+NeoSmart Order é a reposição ideal para atender a demanda real e aumentar o nível de serviço da indústria. Permite que indústrias trabalhem com dados dos varejos para calcular o pedido ideal e otimizar o abastecimento das lojas.
+
+Diferença do VMI: No NeoSmart Order, a indústria usa dados dos varejos da malha Neogrid (já padronizados e consolidados) sem depender de colaboração ativa do varejo. Os dados de sell-out e estoque já estão na base Neogrid.
+
+Como funciona: Os varejos enviam dados de sell-out e estoques diariamente no nível de SKU para a Neogrid. A solução gera previsão de demanda, considera eventos e calcula sugestão de abastecimento ideal. A indústria valida e integra o pedido no ERP.
+
+Diferenciais:
+- Dados de sell-out e estoque já contemplados (sem depender de integração com o varejo)
+- Sem dependência do varejo para disponibilizar dados
+- Dados padronizados e consolidados na base Neogrid
+- Plataforma multi-idiomas
+- Fácil integração com qualquer ERP
+- 33 métodos estatísticos de seleção automática
+
+Benefícios: Aumentar disponibilidade no PDV, melhorar nível de serviço, reduzir devoluções/trocas por validade, melhorar taxa de atendimento de pedidos, reduzir rupturas e excessos, aumentar vendas e giro.
+
+Dificuldades que resolve: falta de visibilidade de estoques no PDV, excesso/falta nas gôndolas, devolução por vencimento, ineficiência operacional no abastecimento, dificuldade de garantir nível de serviço.
+
+=== DRP (Distribution Requirements Planning) ===
+DRP é uma plataforma modular e multicanal para Planejamento de Abastecimento e Distribuição que usa inteligência artificial para reduzir rupturas e excessos, otimizando estoques. Atende em duas jornadas: Jornada de Compras e Jornada de Distribuição.
+
+O que é: Plataforma para planejamento de abastecimento e distribuição multicanal que usa IA para reduzir rupturas e excessos otimizando estoques.
+
+Como funciona:
+1. Previsão de Demanda Inteligente: 33 métodos estatísticos, ferramenta escolhe o melhor para cada item/local
+2. Gestão de Eventos: variáveis externas e internas (promoções, câmbio, sazonalidade)
+3. Abastecimento, Distribuição e Otimização: sugestões automatizadas, alertas de ruptura e excesso
+
+Diferenciais: Personalizações, Omnichannel, Fácil integração com qualquer ERP, Plataforma Multi-idiomas, tecnologia hospedada em nuvem, Parceria com Microsoft, máxima segurança da informação. Consultoria especializada em supply chain.
+
+Perfil de cliente: Varejo (médio, grande e GG). Áreas: Supply Chain, Logística, Planejamento e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.
+
+Resultados alcançados: 3,5 p.p de redução na ruptura, R$ 283.200 de ganho estimado, melhora de 7% para 21% de Aderência em 10 dias, ruptura reduzida para 1,5 p.p.
+
+Benefícios: Reduzir custos logísticos, aumentar rentabilidade, reduzir tempo de compras, garantir eficiência na alocação de novos produtos, melhorar nível de serviço, reduzir excessos.
+
+=== S&OP (Sales and Operations Planning) ===
+S&OP é uma plataforma que automatiza o Planejamento de Vendas e Operações com previsões estatísticas e análises preditivas, tornando o processo mais colaborativo, ágil e eficaz.
+
+O que é: Plataforma para planejamento de demanda colaborativo, abrangente e preciso, com componentes robustos de previsão estatística e gestão de eventos.
+
+3 módulos principais:
+1. Previsão Estatística: 33 métodos estatísticos de seleção automática, perfil de vendas, sazonalidade, tendências, outliers, similaridade
+2. Gestão de Eventos: promoções, ações da concorrência, câmbio, pesquisas de mercado, problemas de abastecimento
+3. Colaboração (Workflow): planejamento entre Marketing, Vendas e Trade Marketing
+
+Como pode ajudar: direciona esforços para análises estratégicas automatizadas, vence o desafio de levantar informações, toma melhores decisões colaborativamente, melhora comunicação entre áreas, centraliza informações em uma plataforma.
+
+Perfil: Indústria e Distribuidores. CEO, Diretoria e Gerência. Supply Chain, Logística, Planejamento e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.
+
+Resultados: Aumento da acurácia da previsão, aumento de vendas, otimização de estoques, aumento de produtividade, redução de custos e perdas, aumento do nível de serviço.
+
+Dores que resolve: processos manuais e lentos, falta de alinhamento entre áreas, baixa acurácia nas previsões, dificuldade em consolidar dados, excessos e faltas de estoque, fluxo de caixa apertado, perda de vendas e market share.
+
+=== NeoLog ===
+NeoLog permite que varejos e seus fornecedores operem de maneira colaborativa, aprimorando a qualidade do serviço prestado. Através de dashboards e indicadores, sinaliza de forma simples e intuitiva as maiores oportunidades na cadeia de abastecimento, focando na melhora da performance da entrega dos pedidos.
+
+O que entrega:
+- Crítica a pedidos: identifica e justifica motivos de não entrega; varejo aceita ou contesta
+- Indicadores: gestão simplificada dos principais KPIs para varejo e fornecedor
+- Árvore de análises: em cascata, sinaliza principais agentes e motivos de não entrega
+- Dashboards: gestão simples e rápida da performance dos principais indicadores
+
+Configurável de acordo com a identidade do varejo.
+
+Benefícios para o Varejo: melhora indicadores de abastecimento, melhor gestão com fornecedores, aumento do nível de serviço, aumento de disponibilidade no PDV, aumento de vendas, redução de custos, apoio para justificativas de penalização de fornecedores.
+
+Benefícios para a Indústria: maior visibilidade das causas de problemas nas entregas, aumento do nível de serviço, aumento de disponibilidade no PDV, melhoria na taxa de atendimento, aumento de vendas, melhor comunicação dos motivos de não entrega, melhoria no fluxo de caixa.
+
+=== Comparações ===
+VMI vs NeoSmart Order:
+- VMI: colaboração ativa — indústria acessa dados do varejo e assume gestão do reabastecimento, com integração direta entre os dois lados
+- NeoSmart Order: indústria usa dados já consolidados na base Neogrid (sem depender de colaboração ativa do varejo), mais autônomo, ideal para quem não tem parceria EDI estabelecida
+- Ambos usam os 3 módulos: Previsão Estatística, Gestão de Eventos e Operação
+
+DRP vs VMI:
+- DRP: foco em planejamento de distribuição e compras para o varejo (otimiza CDs e lojas)
+- VMI: foco na colaboração indústria-varejo para gestão do estoque no PDV pelo fornecedor
+- DRP atende varejo; VMI atende primariamente indústria
+
+S&OP vs DRP:
+- S&OP: planejamento de demanda colaborativo entre áreas internas (vendas, marketing, operações)
+- DRP: execução do abastecimento e distribuição na operação
+- S&OP é estratégico/tático; DRP é operacional
+
+=== Neogrid — Ecossistema ===
+Maior malha de dados da Cadeia de Consumo do Brasil: +500mil PDVs, +5mil indústrias, +3,2mil distribuidores, +190 varejos online, +1 Bilhão de NFs, +3 Bilhões de Price Points.
+Trafegando aproximadamente R$ 216 Bilhões de pedidos/ano via EDI.
+Clientes com EDI melhoram 30% a performance do nível de serviço.
+Parceria com Microsoft. Tecnologia em nuvem.
+`;
+
+let conversationHistory = [];
+let isLoading = false;
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function sendSuggestion(text) {
+  document.getElementById('userInput').value = text;
+  sendMessage();
+}
+
+function addMessage(role, content, animate = true) {
+  const hero = document.getElementById('heroSection');
+  if (hero) hero.style.display = 'none';
+
+  const chatArea = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = `message ${role}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = `avatar ${role === 'ai' ? 'ai' : 'user-av'}`;
+  avatar.textContent = role === 'ai' ? 'N' : 'I';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = content;
+
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const chatArea = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'message ai';
+  div.id = 'typingIndicator';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar ai';
+  avatar.textContent = 'N';
+
+  const typing = document.createElement('div');
+  typing.className = 'typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+
+  div.appendChild(avatar);
+  div.appendChild(typing);
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+function formatResponse(text) {
+  // Bold **text**
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Bullet points
+  text = text.replace(/^[-•]\s(.+)/gm, '<li>$1</li>');
+  text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+  // Line breaks
+  text = text.replace(/\n\n/g, '<br><br>');
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+async function sendMessage() {
+  if (isLoading) return;
+
+  const input = document.getElementById('userInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  addMessage('user', text);
+
+  conversationHistory.push({ role: 'user', content: text });
+
+  showTyping();
+
+  const systemPrompt = `Você é o NeoMind, assistente de inteligência de produtos da Neogrid. Você foi treinado com os materiais oficiais do time de Product Marketing da Neogrid.
+
+Responda perguntas sobre os produtos Neogrid: VMI, NeoSmart Order, DRP, S&OP, NeoLog, EDI.
+
+Base de conhecimento:
+${KNOWLEDGE_BASE}
+
+Regras:
+- Responda sempre em português brasileiro
+- Seja direto e comercialmente útil — como um PMM experiente responderia
+- Use **negrito** para destacar termos importantes
+- Para listas use bullet points com -
+- Se comparar produtos, seja preciso sobre as diferenças reais
+- Se não souber algo específico, diga que não está nos materiais disponíveis e sugira consultar o time
+- Não invente dados ou resultados que não estejam na base
+- Tom: confiante, técnico mas acessível, sem ser corporativo demais
+- Máximo 250 palavras por resposta, seja objetivo`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: conversationHistory
+      })
+    });
+
+    const data = await response.json();
+    removeTyping();
+
+    if (data.content && data.content[0]) {
+      const reply = data.content[0].text;
+      conversationHistory.push({ role: 'assistant', content: reply });
+      addMessage('ai', formatResponse(reply));
+    } else {
+      addMessage('ai', '<div class="error-bubble">Não consegui processar. Tente novamente.</div>');
+    }
+  } catch (err) {
+    removeTyping();
+    addMessage('ai', '<div class="error-bubble">Erro de conexão. Verifique sua internet e tente novamente.</div>');
+  }
+
+  isLoading = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('userInput').focus();
+}
+</script>
+</body>
+</html>
