@@ -3,468 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeoMind — Inteligência Neogrid</title>
+<title>NeoMind AI — Inteligência Neogrid</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
   :root {
     --navy: #0A1628;
-    --navy-mid: #0f1f3d;
-    --navy-light: #1a2f52;
+    --navy-mid: #112240;
+    --navy-light: #1a3560;
     --red: #E8382D;
-    --red-bright: #ff4438;
-    --white: #f5f7fa;
-    --white-dim: rgba(245,247,250,0.7);
-    --white-faint: rgba(245,247,250,0.12);
-    --white-border: rgba(245,247,250,0.08);
-    --glow: rgba(232,56,45,0.15);
+    --red-glow: rgba(232,56,45,0.15);
+    --white: #FFFFFF;
+    --gray: #94A3B8;
+    --gray-light: #CBD5E1;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
     background: var(--navy);
     color: var(--white);
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
   }
 
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
   header {
+    position: relative;
+    z-index: 10;
     padding: 20px 32px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    border-bottom: 1px solid var(--white-border);
-    background: rgba(10,22,40,0.95);
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,22,40,0.8);
     backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
   }
 
-  .logo-mark {
-    width: 36px; height: 36px;
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
     background: var(--red);
     border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .logo-mark svg { width: 20px; height: 20px; }
-
-  .brand { display: flex; flex-direction: column; line-height: 1.1; }
-  .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
-  .brand-sub { font-size: 11px; color: var(--white-dim); font-weight: 300; letter-spacing: 0.5px; }
-
-  .header-badge {
-    margin-left: auto;
-    background: var(--white-faint);
-    border: 1px solid var(--white-border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 11px;
-    color: var(--white-dim);
-  }
-
-  .main {
-    flex: 1; display: flex; flex-direction: column;
-    max-width: 860px; width: 100%; margin: 0 auto; padding: 0 20px;
-  }
-
-  .hero {
-    padding: 52px 0 36px; text-align: center;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--glow); border: 1px solid rgba(232,56,45,0.3);
-    border-radius: 20px; padding: 5px 14px;
-    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--red-bright); margin-bottom: 20px; font-weight: 500;
-  }
-
-  .hero-eyebrow::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--red-bright); border-radius: 50%;
-    animation: pulse 2s ease infinite;
-  }
-
-  .hero h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Syne', sans-serif;
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
-    margin-bottom: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: -0.5px;
   }
 
-  .hero h1 span { color: var(--red); }
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+  }
 
-  .hero p {
-    font-size: 16px; color: var(--white-dim); font-weight: 300;
-    max-width: 480px; margin: 0 auto; line-height: 1.6;
+  .logo-text span {
+    color: var(--red);
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gray);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Main layout */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Welcome state */
+  .welcome {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    gap: 32px;
+  }
+
+  .welcome-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--red-glow);
+    border: 1px solid rgba(232,56,45,0.3);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,56,45,0.2); }
+    50% { box-shadow: 0 0 0 12px rgba(232,56,45,0); }
+  }
+
+  .welcome h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .welcome h1 span { color: var(--red); }
+
+  .welcome p {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 480px;
   }
 
   .suggestions {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center; margin-top: 28px;
-    animation: fadeUp 0.6s 0.1s ease both;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 560px;
   }
 
-  .suggestion-chip {
-    background: var(--white-faint); border: 1px solid var(--white-border);
-    border-radius: 20px; padding: 8px 16px; font-size: 13px;
-    color: var(--white-dim); cursor: pointer; transition: all 0.2s ease;
-    font-family: 'DM Sans', sans-serif;
+  .suggestion-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--gray-light);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.4;
   }
 
-  .suggestion-chip:hover {
-    background: rgba(232,56,45,0.1); border-color: rgba(232,56,45,0.4);
-    color: var(--white); transform: translateY(-1px);
+  .suggestion-btn:hover {
+    background: var(--red-glow);
+    border-color: rgba(232,56,45,0.3);
+    color: var(--white);
+    transform: translateY(-1px);
   }
 
-  .chat-area {
-    flex: 1; overflow-y: auto; padding: 20px 0;
-    display: flex; flex-direction: column; gap: 20px; min-height: 200px;
+  /* Chat area */
+  #chat-area {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 0;
+    gap: 16px;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
 
-  .message { display: flex; gap: 12px; animation: fadeUp 0.3s ease both; }
-  .message.user { flex-direction: row-reverse; }
+  #chat-area.visible {
+    display: flex;
+  }
+
+  .message {
+    display: flex;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .message.user {
+    flex-direction: row-reverse;
+  }
 
   .avatar {
-    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-weight: 600;
   }
 
-  .avatar.ai { background: var(--red); color: white; }
-  .avatar.user-av { background: var(--navy-light); border: 1px solid var(--white-border); color: var(--white-dim); }
+  .avatar.ai {
+    background: var(--red);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+  }
+
+  .avatar.user-av {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+  }
 
   .bubble {
-    max-width: 680px; padding: 14px 18px; border-radius: 12px;
-    font-size: 14.5px; line-height: 1.65; font-weight: 400;
+    max-width: 75%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.7;
   }
 
   .message.ai .bubble {
-    background: var(--navy-light); border: 1px solid var(--white-border);
-    color: var(--white); border-top-left-radius: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
   }
 
   .message.user .bubble {
-    background: var(--red); color: white; border-top-right-radius: 4px;
+    background: var(--red);
+    border-top-right-radius: 4px;
+    color: white;
   }
 
-  .bubble strong { color: var(--red-bright); font-weight: 600; }
-  .message.user .bubble strong { color: white; }
-  .bubble ul { margin: 8px 0 4px 0; padding-left: 18px; }
-  .bubble li { margin-bottom: 4px; }
+  .bubble strong { font-weight: 600; }
+  .bubble em { color: var(--gray-light); font-style: normal; }
 
-  .typing {
-    display: flex; align-items: center; gap: 4px;
-    padding: 14px 18px; background: var(--navy-light);
-    border: 1px solid var(--white-border);
-    border-radius: 12px; border-top-left-radius: 4px; width: fit-content;
+  /* Typing indicator */
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 6px 0;
+    align-items: center;
   }
 
-  .typing span {
-    width: 6px; height: 6px; background: var(--white-dim);
-    border-radius: 50%; animation: bounce 1.2s ease infinite;
+  .typing-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--gray);
+    border-radius: 50%;
+    animation: dot 1.2s ease-in-out infinite;
   }
 
-  .typing span:nth-child(2) { animation-delay: 0.2s; }
-  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
+  @keyframes dot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* Input area */
   .input-area {
-    padding: 20px 0 28px; position: sticky; bottom: 0;
-    background: linear-gradient(to top, var(--navy) 80%, transparent);
+    position: relative;
+    z-index: 10;
+    padding: 16px 0 24px;
+    border-top: 1px solid var(--border);
+    background: rgba(10,22,40,0.8);
+    backdrop-filter: blur(12px);
   }
 
   .input-wrapper {
-    display: flex; align-items: flex-end; gap: 10px;
-    background: var(--navy-light); border: 1px solid var(--white-border);
-    border-radius: 14px; padding: 12px 14px; transition: border-color 0.2s ease;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px 14px;
+    transition: border-color 0.2s;
   }
 
-  .input-wrapper:focus-within { border-color: rgba(232,56,45,0.5); }
-
-  textarea {
-    flex: 1; background: transparent; border: none; outline: none;
-    color: var(--white); font-family: 'DM Sans', sans-serif;
-    font-size: 14.5px; font-weight: 400; line-height: 1.5;
-    resize: none; min-height: 24px; max-height: 120px; overflow-y: auto;
+  .input-wrapper:focus-within {
+    border-color: rgba(232,56,45,0.4);
   }
 
-  textarea::placeholder { color: rgba(245,247,250,0.3); }
-
-  .send-btn {
-    width: 36px; height: 36px; background: var(--red); border: none;
-    border-radius: 8px; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; flex-shrink: 0;
-    transition: all 0.15s ease;
+  #user-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    max-height: 120px;
+    min-height: 22px;
   }
 
-  .send-btn:hover { background: var(--red-bright); transform: scale(1.05); }
-  .send-btn:disabled { background: var(--navy-mid); cursor: not-allowed; transform: none; }
-  .send-btn svg { width: 16px; height: 16px; }
+  #user-input::placeholder { color: var(--gray); }
+
+  #send-btn {
+    width: 34px;
+    height: 34px;
+    background: var(--red);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  #send-btn:hover { background: #c0392b; transform: scale(1.05); }
+  #send-btn:disabled { background: var(--navy-light); cursor: not-allowed; transform: none; }
 
   .input-hint {
-    text-align: center; font-size: 11px;
-    color: rgba(245,247,250,0.25); margin-top: 8px; letter-spacing: 0.2px;
+    font-size: 11px;
+    color: var(--gray);
+    text-align: center;
+    margin-top: 10px;
+    opacity: 0.6;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--white-faint); border-radius: 2px; }
+  /* Error state */
+  .error-bubble {
+    background: rgba(232,56,45,0.1);
+    border: 1px solid rgba(232,56,45,0.3);
+    color: #ff6b6b;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Products pill */
+  .products-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+
+  .product-pill {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--gray);
   }
-  @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .suggestions { grid-template-columns: 1fr; }
+    .welcome h1 { font-size: 24px; }
+    .bubble { max-width: 88%; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo-mark">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" fill="white" opacity="0.9"/>
-      <path d="M12 6L17 9V15L12 18L7 15V9L12 6Z" fill="#E8382D"/>
-    </svg>
+  <div class="logo">
+    <div class="logo-icon">NM</div>
+    <div class="logo-text">Neo<span>Mind</span></div>
   </div>
-  <div class="brand">
-    <span class="brand-name">NeoMind</span>
-    <span class="brand-sub">Inteligência de Produtos Neogrid</span>
-  </div>
-  <span class="header-badge">Beta · PMkt NeoGrid</span>
+  <div class="badge">Inteligência Comercial · Neogrid</div>
 </header>
 
-<div class="main">
-  <div id="heroSection" class="hero">
-    <div class="hero-eyebrow">Treinado nos Materiais Neogrid</div>
-    <h1>Pergunte sobre qualquer<br><span>solução Neogrid</span></h1>
-    <p>Diferenciais, casos de uso, como funciona, para qual perfil indicar — respondo com base nos materiais reais do time.</p>
+<main>
+  <!-- Welcome state -->
+  <div class="welcome" id="welcome">
+    <div class="welcome-icon">⚡</div>
+    <div>
+      <h1>Seu assistente de<br><span>inteligência de produtos</span></h1>
+    </div>
+    <p>Pergunte sobre soluções, diferenciais, ICPs, battlecards, cases e comparações entre produtos do portfólio Neogrid.</p>
+    
     <div class="suggestions">
-      <button class="suggestion-chip" onclick="sendSuggestion('Quais os diferenciais do VMI?')">Diferenciais do VMI</button>
-      <button class="suggestion-chip" onclick="sendSuggestion('Para qual perfil de cliente indicar o DRP?')">Perfil de cliente DRP</button>
-      <button class="suggestion-chip" onclick="sendSuggestion('Como funciona o S&OP da Neogrid?')">Como funciona o S&OP</button>
-      <button class="suggestion-chip" onclick="sendSuggestion('Qual a diferença entre VMI e NeoSmart Order?')">VMI vs NeoSmart Order</button>
-      <button class="suggestion-chip" onclick="sendSuggestion('Quais resultados o DRP já gerou?')">Resultados do DRP</button>
-      <button class="suggestion-chip" onclick="sendSuggestion('O que é o NeoLog?')">O que é NeoLog</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this.textContent)">Quais os diferenciais do VMI frente à concorrência?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this.textContent)">Qual solução indicar para cliente com problema de ruptura?</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this.textContent)">Compare DRP e S&OP para uma indústria de CPG</button>
+      <button class="suggestion-btn" onclick="sendSuggestion(this.textContent)">Quais resultados o VMI já gerou em clientes reais?</button>
+    </div>
+
+    <div class="products-row">
+      <span class="product-pill">VMI</span>
+      <span class="product-pill">DRP</span>
+      <span class="product-pill">S&OP</span>
+      <span class="product-pill">NeoLog</span>
+      <span class="product-pill">EDI</span>
+      <span class="product-pill">NeoSmart Order</span>
     </div>
   </div>
 
-  <div class="chat-area" id="chatArea"></div>
+  <!-- Chat area -->
+  <div id="chat-area"></div>
+</main>
 
-  <div class="input-area">
+<!-- Input -->
+<div class="input-area">
+  <div style="max-width:820px;margin:0 auto;padding:0 20px;">
     <div class="input-wrapper">
-      <textarea
-        id="userInput"
-        placeholder="Pergunte sobre VMI, DRP, S&OP, NeoSmart Order, NeoLog..."
+      <textarea 
+        id="user-input" 
+        placeholder="Pergunte sobre produtos, diferenciais, ICP, battlecards..."
         rows="1"
         onkeydown="handleKey(event)"
         oninput="autoResize(this)"
       ></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <button id="send-btn" onclick="sendMessage()" title="Enviar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
         </svg>
       </button>
     </div>
-    <div class="input-hint">Alimentado com materiais reais de produto · Versão piloto PMkt</div>
+    <div class="input-hint">Enter para enviar · Shift+Enter para nova linha</div>
   </div>
 </div>
 
 <script>
-const KB = {
-  vmi: {
-    keywords: ['vmi','vendor managed','vendor','estoque gerenciado','reposição','abastecimento','sell-out','sellout'],
-    titulo: 'VMI — Vendor Managed Inventory',
-    oque: 'Solução de colaboração entre indústria e parceiros (varejo e distribuidores) que automatiza o abastecimento e reposição de estoques. Permite que a indústria acesse dados de vendas e movimentações dos varejos, assumindo o compromisso sobre o reabastecimento — tudo alinhado com a demanda do consumidor final.',
-    funciona: 'Funciona em 3 módulos integrados: (1) **Previsão Estatística** — analisa perfil de vendas, sazonalidade, tendências e outliers; (2) **Gestão de Eventos** — administra eventos internos e externos que impactam a demanda; (3) **Operação** — políticas de estoque, sugestões de compras e transferências, dashboards.',
-    diferenciais: ['Gestão de categorias — análise por tipo de produto, não só por marca', 'Omnichannel — adequação entre e-commerce e loja física', 'Fácil integração com qualquer ERP', 'Volume Liberado e Rateio por Indisponibilidade', 'SKU Virtual para Serviços', 'Previsão futura com 33 métodos estatísticos'],
-    resultados: 'Case Carrefour + Ypê: **aumento de 63% no sell-out**, redução de 45% nas rupturas e melhoria de quase 50% na disponibilidade de produtos.',
-    perfil: 'Indústria de médio e grande porte, varejo e distribuidores. Áreas: Gerência e Diretoria de Marketing, Trade Marketing e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.',
-    dores: 'Resolve: ruptura de estoque, excesso imobilizado, baixo giro, custo alto de pedidos urgentes, relacionamento baseado em desconto, falta de visibilidade no PDV.'
-  },
-  neosmart: {
-    keywords: ['neosmart','neo smart','smart order','pedido ideal','reposição ideal'],
-    titulo: 'NeoSmart Order',
-    oque: 'A reposição ideal para atender a demanda real e aumentar o nível de serviço da indústria. Permite que indústrias usem dados dos varejos da malha Neogrid para calcular o pedido ideal e otimizar o abastecimento das lojas — sem depender de colaboração ativa do varejo.',
-    funciona: 'Os varejos enviam dados de sell-out e estoques diariamente (nível de SKU) para a Neogrid. A solução gera previsão de demanda, considera eventos que impactam a demanda e calcula a sugestão de abastecimento ideal. A indústria valida e integra o pedido no ERP.',
-    diferenciais: ['Dados de sell-out e estoque já consolidados na base Neogrid — sem depender do varejo', 'Sem necessidade de integração ativa com o varejo', 'Plataforma multi-idiomas', 'Fácil integração com qualquer ERP', '33 métodos estatísticos de seleção automática'],
-    resultados: 'Aumento da disponibilidade no PDV, redução de devoluções por validade, melhoria nas taxas de atendimento de pedidos e aumento do giro de estoques.',
-    perfil: 'Indústria que fornece para varejos da malha Neogrid e quer autonomia no cálculo de reposição sem depender de EDI estabelecido com cada parceiro.',
-    dores: 'Resolve: falta de visibilidade de estoques no PDV, excesso/falta nas gôndolas, devolução por vencimento, ineficiência no abastecimento, dificuldade de garantir nível de serviço.'
-  },
-  drp: {
-    keywords: ['drp','distribution requirements','planejamento de distribuição','planejamento de abastecimento','cd','centro de distribuição','compras','distribuição'],
-    titulo: 'DRP — Distribution Requirements Planning',
-    oque: 'Plataforma modular e multicanal para Planejamento de Abastecimento e Distribuição que usa inteligência artificial para reduzir rupturas e excessos, otimizando estoques. Atende em duas jornadas: **Jornada de Compras** e **Jornada de Distribuição**.',
-    funciona: '(1) **Previsão de Demanda Inteligente** — 33 métodos estatísticos, a ferramenta escolhe o melhor para cada item/local; (2) **Gestão de Eventos** — variáveis externas e internas como promoções, câmbio, sazonalidade; (3) **Abastecimento e Otimização** — sugestões automatizadas, alertas de ruptura e excesso, monitoramento de performance.',
-    diferenciais: ['Plataforma modular — contrata só o que precisa', 'Omnichannel — online e offline', 'Fácil integração com qualquer ERP', 'Plataforma multi-idiomas', 'Tecnologia em nuvem com Parceria Microsoft', 'Consultoria especializada em supply chain incluída'],
-    resultados: '**3,5 p.p de redução na ruptura**, R$ 283.200 de ganho estimado, melhora de 7% para 21% de Aderência em 10 dias, ruptura reduzida para 1,5 p.p.',
-    perfil: 'Varejo de médio, grande e GG porte. Áreas: Supply Chain, Logística, Planejamento e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.',
-    dores: 'Resolve: custos logísticos altos, baixa rentabilidade por ruptura/excesso, processo de compras lento, dificuldade na alocação de novos produtos, baixo nível de serviço.'
-  },
-  sop: {
-    keywords: ['s&op','sop','sales and operation','planejamento de vendas','planejamento colaborativo','forecast','previsão de demanda'],
-    titulo: 'S&OP — Sales and Operations Planning',
-    oque: 'Plataforma que automatiza o Planejamento de Vendas e Operações com previsões estatísticas e análises preditivas, tornando o processo mais colaborativo, ágil e eficaz. Inclui componentes robustos de previsão estatística, gestão de eventos e workflow de colaboração entre áreas.',
-    funciona: '3 módulos principais: (1) **Previsão Estatística** — 33 métodos de seleção automática, gestão de similaridade para itens novos; (2) **Gestão de Eventos** — promoções, ações da concorrência, câmbio, pesquisas de mercado; (3) **Colaboração (Workflow)** — planejamento integrado entre Marketing, Vendas e Trade Marketing.',
-    diferenciais: ['33 métodos estatísticos — usuário não precisa de experiência estatística', 'Workflow colaborativo entre áreas', 'Gestão de similaridade para novos produtos', 'Centraliza todas as informações em uma única plataforma', 'Planejamento de médio e longo prazo', 'Múltiplos calendários e visões por usuário'],
-    resultados: 'Aumento da acurácia da previsão, aumento de vendas, otimização de estoques, aumento de produtividade, redução de custos e perdas, aumento do nível de serviço.',
-    perfil: 'Indústria e Distribuidores. CEO, Diretoria e Gerência. Supply Chain, Logística, Planejamento e Comercial. Setores: Eletro, CPG, Farma, Fashion, Agro.',
-    dores: 'Resolve: processos manuais e lentos, falta de alinhamento entre áreas, baixa acurácia nas previsões, dificuldade em consolidar dados, excessos e faltas, fluxo de caixa apertado.'
-  },
-  neolog: {
-    keywords: ['neolog','neo log','nível de serviço','entrega de pedidos','não entrega','fornecedor varejo','colaboração varejo'],
-    titulo: 'NeoLog',
-    oque: 'Solução que permite que varejos e fornecedores operem de maneira colaborativa, aprimorando a qualidade do serviço prestado. Através de dashboards e indicadores, sinaliza de forma simples e intuitiva as maiores oportunidades na cadeia de abastecimento, com foco na performance da entrega dos pedidos.',
-    funciona: '4 funcionalidades principais: (1) **Crítica a pedidos** — identifica e justifica motivos de não entrega; (2) **Indicadores** — gestão dos principais KPIs para varejo e fornecedor; (3) **Árvore de análises** — em cascata, sinaliza agentes e motivos de não entrega; (4) **Dashboards** — gestão simples da performance. Configurável com a identidade visual do varejo.',
-    diferenciais: ['Visão bilateral — benefícios tanto para varejo quanto para indústria', 'Identificação da causa raiz dos problemas de entrega', 'Portal configurável com a identidade do varejo', 'Permite antecipar situações de desabastecimento'],
-    resultados: 'Para o varejo: melhora indicadores de abastecimento, aumenta nível de serviço, reduz custos, apoia penalização de fornecedores. Para a indústria: maior visibilidade de problemas, aumento de vendas, melhoria no fluxo de caixa.',
-    perfil: 'Varejo que quer melhorar gestão de fornecedores e indústria que quer visibilidade de problemas nas entregas.',
-    dores: 'Resolve: baixo nível de serviço, falta de visibilidade das causas de não entrega, dificuldade de gestão de fornecedores, perdas de vendas por desabastecimento.'
-  },
-  neogrid: {
-    keywords: ['neogrid','ecossistema','malha','empresa','quem é','o que é neogrid'],
-    titulo: 'Neogrid — Ecossistema',
-    oque: 'A Neogrid é a maior malha de dados da Cadeia de Consumo do Brasil. É um ecossistema completo de colaboração e inteligência que conecta indústrias, distribuidores e varejos.',
-    funciona: 'Oferece soluções para toda a jornada da cadeia de consumo: planejamento (S&OP), abastecimento e distribuição (DRP, VMI, NeoSmart Order), colaboração logística (NeoLog) e integração de documentos (EDI).',
-    diferenciais: ['+500mil PDVs conectados', '+5mil indústrias', '+3,2mil distribuidores e varejos', '+1 Bilhão de NFs trafegadas', 'R$ 216 Bilhões de pedidos/ano via EDI', 'Parceria com Microsoft', 'Tecnologia em nuvem com máxima segurança'],
-    resultados: 'Clientes com EDI Neogrid melhoram 30% a performance do nível de serviço.',
-    perfil: 'Indústrias, distribuidores e varejos de todos os segmentos e portes.',
-    dores: 'Resolve os principais desafios da cadeia de supply chain: ruptura, excesso, baixo giro, falta de visibilidade, operação manual e fragmentação entre parceiros.'
-  }
-};
+const chatArea = document.getElementById('chat-area');
+const welcome = document.getElementById('welcome');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
 
-function findProduct(query) {
-  const q = query.toLowerCase();
-  let best = null;
-  let bestScore = 0;
-  for (const [key, data] of Object.entries(KB)) {
-    let score = 0;
-    for (const kw of data.keywords) {
-      if (q.includes(kw)) score += kw.length;
-    }
-    if (score > bestScore) { bestScore = score; best = key; }
-  }
-  return bestScore > 0 ? best : null;
-}
-
-function detectIntent(query) {
-  const q = query.toLowerCase();
-  if (q.match(/diferenci|por que escolher|vantag|melhor que|destaque/)) return 'diferenciais';
-  if (q.match(/result|case|número|ganho|redução|aumento|roi|prova/)) return 'resultados';
-  if (q.match(/como funciona|como trabalha|processo|etapa|passo|módulo/)) return 'funciona';
-  if (q.match(/o que é|what is|defin|explica|resumo|conceito/)) return 'oque';
-  if (q.match(/perfil|cliente|para quem|indicar|quem usa|segmento|porte|área/)) return 'perfil';
-  if (q.match(/dor|problema|resolve|desafio|dificuldade|precisa/)) return 'dores';
-  if (q.match(/vs|versus|diferença|comparar|comparação|melhor.*entre|qual.*escolh/)) return 'comparar';
-  return 'geral';
-}
-
-function buildResponse(query) {
-  const q = query.toLowerCase();
-  const productKey = findProduct(query);
-  const intent = detectIntent(query);
-
-  // Comparison questions
-  if (intent === 'comparar') {
-    if ((q.includes('vmi') && q.includes('neosmart')) || (q.includes('vmi') && q.includes('smart'))) {
-      return `**VMI vs NeoSmart Order — principais diferenças:**
-
-**VMI** é uma solução de colaboração ativa entre indústria e varejo. A indústria acessa os dados do parceiro específico e assume a gestão do reabastecimento daquele varejo. Requer integração EDI estabelecida.
-
-**NeoSmart Order** é mais autônomo — a indústria usa dados já consolidados na malha Neogrid (sem depender de integração com cada varejo individualmente). Ideal para quem quer escalar para muitos parceiros sem negociar integração caso a caso.
-
-Ambos usam os mesmos 3 módulos: Previsão Estatística, Gestão de Eventos e Operação.
-
-**Quando indicar VMI:** cliente com poucos parceiros estratégicos, quer gestão profunda e colaborativa.
-**Quando indicar NeoSmart Order:** cliente quer escalar reposição para muitos varejos da malha Neogrid com mais autonomia.`;
-    }
-    if (q.includes('drp') && q.includes('vmi')) {
-      return `**DRP vs VMI — principais diferenças:**
-
-**DRP** é voltado para o **varejo** otimizar seus próprios estoques nos CDs e lojas. É o varejo planejando seu abastecimento interno.
-
-**VMI** é voltado para a **indústria** gerenciar o estoque dentro do varejo parceiro. É a indústria assumindo o reabastecimento do cliente.
-
-Em resumo: DRP olha de dentro para fora (varejo planejando suas compras), VMI olha de fora para dentro (indústria gerenciando o PDV do parceiro).`;
-    }
-    if (q.includes('drp') && (q.includes('sop') || q.includes('s&op'))) {
-      return `**S&OP vs DRP — principais diferenças:**
-
-**S&OP** é estratégico e tático — foco no planejamento colaborativo entre áreas internas (vendas, marketing, operações, trade). Define o plano de demanda da empresa.
-
-**DRP** é operacional — foco na execução do abastecimento e distribuição. Traduz o plano em sugestões de compra e distribuição para CDs e lojas.
-
-São complementares: S&OP planeja a demanda, DRP executa o abastecimento com base nessa previsão.`;
-    }
-  }
-
-  // No product found
-  if (!productKey) {
-    if (q.match(/oi|olá|ola|hey|bom dia|boa tarde|boa noite|tudo bem/)) {
-      return `Olá! Sou o **NeoMind**, assistente de inteligência de produtos da Neogrid.
-
-Posso responder sobre: **VMI**, **DRP**, **S&OP**, **NeoSmart Order** e **NeoLog**.
-
-Sobre qual solução você quer saber?`;
-    }
-    return `Não encontrei informação específica sobre isso nos meus materiais. Posso ajudar com perguntas sobre **VMI**, **DRP**, **S&OP**, **NeoSmart Order** e **NeoLog** — diferenciais, como funciona, resultados, perfil de cliente e comparações entre produtos.`;
-  }
-
-  const p = KB[productKey];
-
-  if (intent === 'diferenciais') {
-    const lista = p.diferenciais.map(d => `- ${d}`).join('\n');
-    return `**${p.titulo} — Diferenciais:**\n\n${lista}\n\n${p.dores}`;
-  }
-
-  if (intent === 'resultados') {
-    return `**${p.titulo} — Resultados:**\n\n${p.resultados}`;
-  }
-
-  if (intent === 'funciona') {
-    return `**${p.titulo} — Como funciona:**\n\n${p.funciona}`;
-  }
-
-  if (intent === 'oque') {
-    return `**${p.titulo}**\n\n${p.oque}`;
-  }
-
-  if (intent === 'perfil') {
-    return `**${p.titulo} — Perfil de cliente ideal:**\n\n${p.perfil}`;
-  }
-
-  if (intent === 'dores') {
-    return `**${p.titulo} — Problemas que resolve:**\n\n${p.dores}`;
-  }
-
-  // General — show overview
-  const lista = p.diferenciais.slice(0,3).map(d => `- ${d}`).join('\n');
-  return `**${p.titulo}**\n\n${p.oque}\n\n**Como funciona:**\n${p.funciona}\n\n**Principais diferenciais:**\n${lista}\n\n**Resultados:** ${p.resultados}`;
-}
-
-function formatResponse(text) {
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/^- (.+)/gm, '<li>$1</li>');
-  text = text.replace(/(<li>[\s\S]*?<\/li>)/g, (m) => `<ul>${m}</ul>`);
-  text = text.replace(/<\/ul>\s*<ul>/g, '');
-  text = text.replace(/\n\n/g, '<br><br>');
-  text = text.replace(/\n/g, '<br>');
-  return text;
-}
+let conversationHistory = [];
+let isLoading = false;
 
 function autoResize(el) {
   el.style.height = 'auto';
@@ -472,63 +468,148 @@ function autoResize(el) {
 }
 
 function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 }
 
 function sendSuggestion(text) {
-  document.getElementById('userInput').value = text;
+  userInput.value = text;
   sendMessage();
 }
 
-function addMessage(role, content) {
-  const hero = document.getElementById('heroSection');
-  if (hero) hero.style.display = 'none';
-  const chatArea = document.getElementById('chatArea');
-  const div = document.createElement('div');
-  div.className = `message ${role}`;
-  const avatar = document.createElement('div');
-  avatar.className = `avatar ${role === 'ai' ? 'ai' : 'user-av'}`;
-  avatar.textContent = role === 'ai' ? 'N' : 'I';
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.innerHTML = content;
-  div.appendChild(avatar);
-  div.appendChild(bubble);
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
+function showWelcome(show) {
+  welcome.style.display = show ? 'flex' : 'none';
+  if (show) {
+    chatArea.classList.remove('visible');
+  } else {
+    chatArea.classList.add('visible');
+  }
 }
 
-function showTyping() {
-  const chatArea = document.getElementById('chatArea');
-  const div = document.createElement('div');
-  div.className = 'message ai'; div.id = 'typingIndicator';
+function addMessage(role, content) {
+  const msg = document.createElement('div');
+  msg.className = `message ${role}`;
+  
   const avatar = document.createElement('div');
-  avatar.className = 'avatar ai'; avatar.textContent = 'N';
-  const typing = document.createElement('div');
-  typing.className = 'typing';
-  typing.innerHTML = '<span></span><span></span><span></span>';
-  div.appendChild(avatar); div.appendChild(typing);
-  chatArea.appendChild(div);
+  avatar.className = `avatar ${role === 'ai' ? 'ai' : 'user-av'}`;
+  avatar.textContent = role === 'ai' ? 'NM' : '👤';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  
+  if (role === 'ai') {
+    bubble.innerHTML = formatText(content);
+  } else {
+    bubble.textContent = content;
+  }
+  
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chatArea.appendChild(msg);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  
+  return msg;
+}
+
+function formatText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>')
+    .replace(/$/, '</p>');
+}
+
+function addTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'message ai';
+  msg.id = 'typing-msg';
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar ai';
+  avatar.textContent = 'NM';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chatArea.appendChild(msg);
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 function removeTyping() {
-  const el = document.getElementById('typingIndicator');
-  if (el) el.remove();
+  const t = document.getElementById('typing-msg');
+  if (t) t.remove();
 }
 
-function sendMessage() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
+async function sendMessage() {
+  if (isLoading) return;
+  
+  const text = userInput.value.trim();
   if (!text) return;
-  input.value = ''; input.style.height = 'auto';
+  
+  // Show chat, hide welcome
+  showWelcome(false);
+  
+  // Add user message
   addMessage('user', text);
-  showTyping();
-  setTimeout(() => {
+  conversationHistory.push({ role: 'user', content: text });
+  
+  // Clear input
+  userInput.value = '';
+  userInput.style.height = 'auto';
+  
+  // Disable send
+  isLoading = true;
+  sendBtn.disabled = true;
+  
+  // Show typing
+  addTyping();
+  
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: conversationHistory.slice(-10) // last 5 turns
+      })
+    });
+    
     removeTyping();
-    const response = buildResponse(text);
-    addMessage('ai', formatResponse(response));
-  }, 600 + Math.random() * 400);
+    
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Erro na API');
+    }
+    
+    const data = await response.json();
+    const aiText = data.response;
+    
+    addMessage('ai', aiText);
+    conversationHistory.push({ role: 'assistant', content: aiText });
+    
+  } catch (error) {
+    removeTyping();
+    
+    const errMsg = document.createElement('div');
+    errMsg.className = 'message ai';
+    errMsg.innerHTML = `
+      <div class="avatar ai">NM</div>
+      <div class="error-bubble">⚠️ ${error.message || 'Erro de conexão. Tente novamente.'}</div>
+    `;
+    chatArea.appendChild(errMsg);
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+  
+  isLoading = false;
+  sendBtn.disabled = false;
+  userInput.focus();
 }
 </script>
 </body>
