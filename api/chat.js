@@ -42,7 +42,7 @@ Conhece profundamente:
         'X-Title': 'NeoMind AI'
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
+        model: 'openrouter/auto',
         messages,
         max_tokens: 1024,
         temperature: 0.7
