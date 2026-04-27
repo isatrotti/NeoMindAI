@@ -42,7 +42,7 @@ Conhece profundamente:
         'X-Title': 'NeoMind AI'
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-exp:free',
+        model: 'meta-llama/llama-3.1-8b-instruct:free',
         messages,
         max_tokens: 1024,
         temperature: 0.7
